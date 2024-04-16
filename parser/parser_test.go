@@ -26,7 +26,7 @@ func TestAllDatabases_Use(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementUse {
+				if ast.Type() != types.UseStatement {
 					t.Error("AST type is not use")
 				}
 			}
@@ -52,7 +52,7 @@ func TestAllDatabases_Select(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementSelect {
+				if ast.Type() != types.SelectStatement {
 					t.Error("AST type is not select")
 				}
 			}
@@ -78,7 +78,7 @@ func TestAllDatabases_Insert(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementInsert {
+				if ast.Type() != types.InsertStatement {
 					t.Error("AST type is not insert")
 				}
 			}
@@ -104,7 +104,7 @@ func TestAllDatabases_Update(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementUpdate {
+				if ast.Type() != types.UpdateStatement {
 					t.Error("AST type is not update")
 				}
 			}
@@ -130,7 +130,7 @@ func TestAllDatabases_Delete(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementDelete {
+				if ast.Type() != types.DeleteStatement {
 					t.Error("AST type is not delete")
 				}
 			}
@@ -160,7 +160,7 @@ func TestAllDatabases_Alter(t *testing.T) {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
-					if ast.Type() != types.StatementAlter {
+					if ast.Type() != types.AlterStatement {
 						t.Error("AST type is not alter")
 					}
 				}
@@ -217,7 +217,7 @@ func TestAllDatabases_Create(t *testing.T) {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
-					if ast.Type() != types.StatementCreate {
+					if ast.Type() != types.CreateStatement {
 						t.Error("AST type is not create")
 					}
 				}
@@ -244,7 +244,7 @@ func TestAllDatabases_Drop(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementDrop {
+				if ast.Type() != types.DropStatement {
 					t.Error("AST type is not drop")
 				}
 			}
@@ -296,7 +296,7 @@ func TestBigQuery_With_Select(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.StatementSelect {
+				if ast.Type() != types.SelectStatement {
 					t.Error("AST type is not select")
 				}
 			}

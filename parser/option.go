@@ -10,16 +10,6 @@ type dbOpt struct {
 	DB Database
 }
 
-// export interface ParseOptions {
-// includeLocations?: boolean;
-// }
-// export interface Option {
-// database?: string;
-// type?: string;
-// trimQuery?: boolean;
-// parseOptions?: ParseOptions;
-// }
-
 func (o dbOpt) Opt(obj *goja.Object) {
 	obj.Set("database", o.DB.String())
 }

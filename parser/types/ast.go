@@ -6,41 +6,43 @@ type ASTs []AST
 type Statement string
 
 const (
-	StatementUse     Statement = "use"
-	StatementSelect  Statement = "select"
-	StatementInsert  Statement = "insert"
-	StatementReplace Statement = "replace"
-	StatementUpdate  Statement = "update"
-	StatementDelete  Statement = "delete"
-	StatementAlter   Statement = "alter"
-	StatementCreate  Statement = "create"
-	StatementDrop    Statement = "drop"
+	UnknownStatement Statement = ""
+	UseStatement     Statement = "use"
+	SelectStatement  Statement = "select"
+	InsertStatement  Statement = "insert"
+	ReplaceStatement Statement = "replace"
+	UpdateStatement  Statement = "update"
+	DeleteStatement  Statement = "delete"
+	AlterStatement   Statement = "alter"
+	CreateStatement  Statement = "create"
+	DropStatement    Statement = "drop"
 )
 
-func typeFrom(t string) Statement {
-	switch t {
-	case "use":
-		return StatementUse
-	case "select":
-		return StatementSelect
-	case "insert":
-		return StatementInsert
-	case "replace":
-		return StatementReplace
-	case "update":
-		return StatementUpdate
-	case "delete":
-		return StatementDelete
-	case "alter":
-		return StatementAlter
-	case "create":
-		return StatementCreate
-	case "drop":
-		return StatementDrop
+var Statements = []Statement{
+	UseStatement,
+	SelectStatement,
+	InsertStatement,
+	ReplaceStatement,
+	UpdateStatement,
+	DeleteStatement,
+	AlterStatement,
+	CreateStatement,
+	DropStatement,
+}
+
+func (s Statement) String() string {
+	return string(s)
+}
+
+func statementFrom(t string) Statement {
+	for _, s := range Statements {
+		if s.String() == t {
+			return s
+		}
 	}
-	return ""
+	return UnknownStatement
 }
 
 func (a AST) Type() Statement {
-	return typeFrom(a["type"].(string))
+	return statementFrom(a["type"].(string))
 }

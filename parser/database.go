@@ -1,7 +1,5 @@
 package parser
 
-import "github.com/datakit-dev/go-sql-parser/parser/types"
-
 type Database string
 
 const (
@@ -40,25 +38,4 @@ var Databases = []Database{
 
 func (d Database) String() string {
 	return string(d)
-}
-
-func (d Database) Supports(s types.Statement) bool {
-	// switch s {
-	// case types.StatementAlter:
-	// 	switch d {
-	// 	case DatabaseBigQuery:
-	// 		return false
-	// 	}
-	// case types.StatementCreate:
-	// 	switch d {
-	// 	case DatabaseBigQuery, DatabaseDB2, DatabaseMariaDB:
-	// 		return false
-	// 	}
-	// case types.StatementDrop:
-	// 	switch d {
-	// 	case DatabaseBigQuery:
-	// 		return false
-	// 	}
-	// }
-	return true
 }
