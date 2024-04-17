@@ -27,8 +27,16 @@ func TestAllDatabases_Use(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.UseStatement {
+				if !ast.Is(types.UseStatement) {
 					t.Error("AST type is not use")
+				} else {
+					useStmt, err := ast.Use()
+					if err != nil {
+						t.Error("Error decoding use statement:", err)
+					}
+					if useStmt == nil {
+						t.Error("Use statement is nil")
+					}
 				}
 			}
 		}
@@ -55,8 +63,16 @@ func TestAllDatabases_Select(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.SelectStatement {
-					t.Error("AST type is not select")
+				if !ast.Is(types.SelectStatement) {
+					t.Error("AST type is not selete")
+				} else {
+					selectStmt, err := ast.Select()
+					if err != nil {
+						t.Error("Error decoding select statement:", err)
+					}
+					if selectStmt == nil {
+						t.Error("Select statement is nil")
+					}
 				}
 			}
 		}
@@ -83,8 +99,16 @@ func TestAllDatabases_Insert(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.InsertStatement {
+				if !ast.Is(types.InsertStatement) {
 					t.Error("AST type is not insert")
+				} else {
+					insertStmt, err := ast.Insert()
+					if err != nil {
+						t.Error("Error decoding insert statement:", err)
+					}
+					if insertStmt == nil {
+						t.Error("Insert statement is nil")
+					}
 				}
 			}
 		}
@@ -111,8 +135,16 @@ func TestAllDatabases_Update(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.UpdateStatement {
+				if !ast.Is(types.UpdateStatement) {
 					t.Error("AST type is not update")
+				} else {
+					updateStmt, err := ast.Update()
+					if err != nil {
+						t.Error("Error decoding update statement:", err)
+					}
+					if updateStmt == nil {
+						t.Error("Update statement is nil")
+					}
 				}
 			}
 		}
@@ -139,8 +171,16 @@ func TestAllDatabases_Delete(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.DeleteStatement {
+				if !ast.Is(types.DeleteStatement) {
 					t.Error("AST type is not delete")
+				} else {
+					deleteStmt, err := ast.Delete()
+					if err != nil {
+						t.Error("Error decoding delete statement:", err)
+					}
+					if deleteStmt == nil {
+						t.Error("Delete statement is nil")
+					}
 				}
 			}
 		}
@@ -171,8 +211,16 @@ func TestAllDatabases_Alter(t *testing.T) {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
-					if ast.Type() != types.AlterStatement {
+					if !ast.Is(types.AlterStatement) {
 						t.Error("AST type is not alter")
+					} else {
+						alterStmt, err := ast.Alter()
+						if err != nil {
+							t.Error("Error decoding alter statement:", err)
+						}
+						if alterStmt == nil {
+							t.Error("Alter statement is nil")
+						}
 					}
 				}
 			}
@@ -226,8 +274,16 @@ func TestAllDatabases_Create(t *testing.T) {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
-					if ast.Type() != types.CreateStatement {
+					if !ast.Is(types.CreateStatement) {
 						t.Error("AST type is not create")
+					} else {
+						createStmt, err := ast.Create()
+						if err != nil {
+							t.Error("Error decoding create statement:", err)
+						}
+						if createStmt == nil {
+							t.Error("Drop statement is nil")
+						}
 					}
 				}
 			}
@@ -255,8 +311,17 @@ func TestAllDatabases_Drop(t *testing.T) {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
-				if ast.Type() != types.DropStatement {
+				if !ast.Is(types.DropStatement) {
 					t.Error("AST type is not drop")
+				} else {
+					dropStmt, err := ast.Drop()
+					if err != nil {
+						t.Error("Error decoding drop statement:", err)
+					}
+					if dropStmt == nil {
+						t.Error("Drop statement is nil")
+					}
+
 				}
 			}
 		}
