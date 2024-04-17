@@ -3,21 +3,27 @@ package internal
 import (
 	"fmt"
 
-	"github.com/datakit-dev/go-sql-parser/internal/types"
 	"github.com/dop251/goja"
 )
 
+type TableColumnList struct {
+	TableList  []string `json:"tableList"`
+	ColumnList []string `json:"columnList"`
+}
+
 type ParseResult struct {
 	*ASTResult
-	types.TableColumnAst
+	TableColumnList
 }
 
 func NewParseResult(vm *goja.Runtime, val goja.Value) (*ParseResult, error) {
-	tca := types.TableColumnAst{}
-	err := vm.ExportTo(val, &tca)
+	res := ParseResult{}
+	tcl := TableColumnList{}
+	err := vm.ExportTo(val, &tcl)
 	if err != nil {
 		return nil, err
 	}
+	res.TableColumnList = tcl
 
 	rObj := val.ToObject(vm)
 	if rObj == nil {
@@ -29,10 +35,10 @@ func NewParseResult(vm *goja.Runtime, val goja.Value) (*ParseResult, error) {
 		return nil, fmt.Errorf("parse failed")
 	}
 
-	ast, err := NewAST(vm, astVal)
+	res.ASTResult, err = NewASTResult(vm, astVal)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ParseResult{ast, tca}, nil
+	return &res, nil
 }

@@ -14,9 +14,9 @@ func TestAllDatabases_Use(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse(fmt.Sprintf("USE %s", "cool_db"), types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse(fmt.Sprintf("USE %s", "cool_db"), opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -42,9 +42,9 @@ func TestAllDatabases_Select(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse("SELECT * FROM employees", types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse("SELECT * FROM employees", opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -70,9 +70,9 @@ func TestAllDatabases_Insert(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse("INSERT INTO employees (name, age) VALUES ('John Doe', 30)", types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse("INSERT INTO employees (name, age) VALUES ('John Doe', 30)", opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -98,9 +98,9 @@ func TestAllDatabases_Update(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse("UPDATE employees SET age = 31 WHERE name = 'John Doe'", types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse("UPDATE employees SET age = 31 WHERE name = 'John Doe'", opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -126,9 +126,9 @@ func TestAllDatabases_Delete(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse("DELETE FROM employees WHERE name = 'John Doe'", types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse("DELETE FROM employees WHERE name = 'John Doe'", opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -154,13 +154,13 @@ func TestAllDatabases_Alter(t *testing.T) {
 	}
 
 	for _, db := range Databases {
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
 		switch db {
 		case BigQuery:
 		case FlinkSQL:
 		default:
-			res, err := p.Parse("ALTER TABLE employees ADD COLUMN salary INT", types.Option{
-				Database: db.String(),
-			})
+			res, err := p.Parse("ALTER TABLE employees ADD COLUMN salary INT", opt)
 			if err != nil {
 				t.Error(fmt.Sprintf("%s failed", db), err)
 			}
@@ -187,6 +187,9 @@ func TestAllDatabases_Create(t *testing.T) {
 	}
 
 	for _, db := range Databases {
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+
 		var query string
 		switch db {
 		case Athena:
@@ -194,9 +197,9 @@ func TestAllDatabases_Create(t *testing.T) {
 		case BigQuery:
 			query = `
 				CREATE TABLE employees (
-					id BIGINT,
+					id INT64,
 					name TEXT,
-					age BIGINT
+					age INT64
 				)
 			`
 		case Hive, TransactSQL, PostgreSQL, Redshift, MariaDB, MySQL, DB2, Trino:
@@ -204,7 +207,7 @@ func TestAllDatabases_Create(t *testing.T) {
 		case FlinkSQL:
 			query = "CREATE TABLE employees (id BIGINT, name TEXT)"
 		case Snowflake:
-			query = "CREATE TABLE mytable (id INT, amount NUMERIC);"
+			query = "CREATE TABLE mytable (id INT, amount BIGINT);"
 		case Sqlite:
 			query = "CREATE TABLE employees (id INT, name TEXT)"
 		default:
@@ -212,9 +215,7 @@ func TestAllDatabases_Create(t *testing.T) {
 		}
 
 		if query != "" {
-			res, err := p.Parse(query, types.Option{
-				Database: db.String(),
-			})
+			res, err := p.Parse(query, opt)
 			if err != nil {
 				t.Error(fmt.Sprintf("%s failed", db), err)
 			}
@@ -241,9 +242,9 @@ func TestAllDatabases_Drop(t *testing.T) {
 	}
 
 	for _, db := range Databases {
-		res, err := p.Parse("DROP TABLE employees", types.Option{
-			Database: db.String(),
-		})
+		opt := types.Option{}
+		opt.SetDatabase(db.String())
+		res, err := p.Parse("DROP TABLE employees", opt)
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
@@ -268,6 +269,9 @@ func TestBigQuery_With_Select(t *testing.T) {
 		t.Errorf("Error loading parser: %v", err)
 	}
 
+	opt := types.Option{}
+	opt.SetDatabase(BigQuery.String())
+
 	res, err := p.Parse(`
 		WITH t1 AS (
 			SELECT a, b FROM schema1.table1
@@ -277,9 +281,7 @@ func TestBigQuery_With_Select(t *testing.T) {
 		SELECT a, b FROM t1
 		UNION ALL
 		SELECT c, d FROM t2
-	`, types.Option{
-		Database: BigQuery.String(),
-	})
+	`, opt)
 	if err != nil {
 		t.Error(fmt.Sprintf("%s failed", BigQuery), err)
 	}

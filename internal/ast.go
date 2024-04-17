@@ -17,7 +17,7 @@ type ASTResult struct {
 	v     goja.Value
 }
 
-func NewAST(vm *goja.Runtime, val goja.Value) (*ASTResult, error) {
+func NewASTResult(vm *goja.Runtime, val goja.Value) (*ASTResult, error) {
 	var first AST
 	var slice ASTs
 
