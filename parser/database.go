@@ -1,4 +1,4 @@
-package internal
+package parser
 
 type Database string
 

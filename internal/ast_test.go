@@ -3,7 +3,7 @@ package internal
 import (
 	"testing"
 
-	"github.com/datakit-dev/go-sql-parser/internal/types"
+	"github.com/datakit-dev/go-sql-parser/parser/types"
 )
 
 func TestAST_Type(t *testing.T) {

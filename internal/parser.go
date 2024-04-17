@@ -5,7 +5,7 @@ import (
 
 	_ "embed"
 
-	"github.com/datakit-dev/go-sql-parser/internal/types"
+	"github.com/datakit-dev/go-sql-parser/parser/types"
 	"github.com/dop251/goja"
 )
 
