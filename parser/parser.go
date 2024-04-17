@@ -11,6 +11,12 @@ var (
 	ErrParserNotInitialized = fmt.Errorf("parser not initialized")
 )
 
+type TableColumnList *internal.TableColumnList
+type ParseResult *internal.ParseResult
+type AST *internal.AST
+type ASTs *internal.ASTs
+type ASTResult *internal.ASTResult
+
 type Parser struct {
 	p *internal.Parser
 }

@@ -12,8 +12,8 @@ type AST map[string]any
 type ASTs []AST
 
 type ASTResult struct {
-	ASTs
-	First AST
+	*ASTs
+	First *AST
 	v     goja.Value
 }
 
@@ -43,7 +43,11 @@ func NewASTResult(vm *goja.Runtime, val goja.Value) (*ASTResult, error) {
 		slice = append(slice, first)
 	}
 
-	return &ASTResult{slice, first, val}, nil
+	return &ASTResult{&slice, &first, val}, nil
+}
+
+func (s ASTs) Len() int {
+	return len(s)
 }
 
 func (s ASTs) FindAll(t types.Statement) ASTs {
