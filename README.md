@@ -4,22 +4,22 @@ go-sql-parser is a wrapper around the node-sql-parser library, providing a Go im
 
 For more information about the node-sql-parser library, please visit: [node-sql-parser](https://www.npmjs.com/package/node-sql-parser)
 
-## Supported Database Dialects
+## Supported SQL Dialects
 
-- athena
-- bigquery
-- db2
-- flinksql
-- hive
-- mariadb
-- mysql
-- noql
-- postgresql
-- redshift
-- snowflake
-- sqlite
-- transactsql
-- trino
+- Athena
+- BigQuery
+- DB2
+- FlinkSQL
+- Hive
+- MariaDB
+- MySQL
+- Noql
+- PostgreSQL
+- Redshift
+- Snowflake
+- Sqlite
+- TransactSQL
+- Trino
 
 ## Installation
 

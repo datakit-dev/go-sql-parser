@@ -5,6 +5,7 @@ go 1.22.1
 require (
 	github.com/dop251/goja v0.0.0-20240220182346-e401ed450204
 	github.com/dop251/goja_nodejs v0.0.0-20240221231712-27eeffc9c235
+	github.com/mitchellh/mapstructure v1.5.0
 )
 
 require (

@@ -1,8 +1,5 @@
 package types
 
-type AST map[string]any
-type ASTs []AST
-
 type Statement string
 
 const (
@@ -34,15 +31,11 @@ func (s Statement) String() string {
 	return string(s)
 }
 
-func statementFrom(t string) Statement {
+func StatementFrom(t string) Statement {
 	for _, s := range Statements {
 		if s.String() == t {
 			return s
 		}
 	}
 	return UnknownStatement
-}
-
-func (a AST) Type() Statement {
-	return statementFrom(a["type"].(string))
 }

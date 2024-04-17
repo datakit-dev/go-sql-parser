@@ -2,7 +2,7 @@ package types
 
 import "testing"
 
-func TestTypeFrom(t *testing.T) {
+func Test_statementFrom(t *testing.T) {
 	tests := []struct {
 		input    string
 		expected Statement
@@ -19,7 +19,7 @@ func TestTypeFrom(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := statementFrom(test.input)
+		result := StatementFrom(test.input)
 		if result != test.expected {
 			t.Errorf("typeFrom(%s) returned %s, expected %s", test.input, result, test.expected)
 		}
