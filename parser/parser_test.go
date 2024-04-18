@@ -19,11 +19,11 @@ func TestParse_Select(t *testing.T) {
 		t.Error("Failed to parse SQL", err)
 	}
 
-	if res != nil && res.First != nil && res.ASTs.Len() > 1 {
+	if res != nil && res.AST.Len() > 1 {
 		t.Error("AST length is greater than 1")
 	}
 
-	for _, ast := range *res.ASTs {
+	for _, ast := range res.AST {
 		if ast == nil {
 			t.Error("AST is nil")
 		} else {
@@ -36,7 +36,7 @@ func TestParse_Select(t *testing.T) {
 		}
 	}
 
-	sel, err := res.First.Select()
+	sel, err := res.AST.First().Select()
 	if err != nil {
 		t.Error("Failed to get select statement", err)
 	}
@@ -84,10 +84,11 @@ func TestAllDatabases_Use(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -119,10 +120,11 @@ func TestAllDatabases_Select(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -154,10 +156,11 @@ func TestAllDatabases_Insert(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -189,10 +192,11 @@ func TestAllDatabases_Update(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -224,10 +228,11 @@ func TestAllDatabases_Delete(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -263,10 +268,11 @@ func TestAllDatabases_Alter(t *testing.T) {
 			if err != nil {
 				t.Error(fmt.Sprintf("%s failed", db), err)
 			}
-			if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-				t.Errorf("%s AST length is greater than 1", db)
+			if res != nil && res.AST.Len() > 1 {
+				t.Error("AST length is greater than 1")
 			}
-			for _, ast := range *res.ASTs {
+
+			for _, ast := range res.AST {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
@@ -325,10 +331,11 @@ func TestAllDatabases_Create(t *testing.T) {
 			if err != nil {
 				t.Error(fmt.Sprintf("%s failed", db), err)
 			}
-			if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-				t.Errorf("%s AST length is greater than 1", db)
+			if res != nil && res.AST.Len() > 1 {
+				t.Error("AST length is greater than 1")
 			}
-			for _, ast := range *res.ASTs {
+
+			for _, ast := range res.AST {
 				if ast == nil {
 					t.Error("AST is nil")
 				} else {
@@ -361,10 +368,11 @@ func TestAllDatabases_Drop(t *testing.T) {
 		if err != nil {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
-		if res != nil && res.ASTResult != nil && res.ASTs.Len() > 1 {
-			t.Errorf("%s AST length is greater than 1", db)
+		if res != nil && res.AST.Len() > 1 {
+			t.Error("AST length is greater than 1")
 		}
-		for _, ast := range *res.ASTs {
+
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {
@@ -424,10 +432,10 @@ func TestBigQuery_With_Select(t *testing.T) {
 	}
 	if res != nil && res.ASTResult == nil {
 		t.Error("AST is nil")
-	} else if res.ASTs.Len() == 0 {
+	} else if res.AST.Len() == 0 {
 		t.Error("AST is empty")
 	} else {
-		for _, ast := range *res.ASTs {
+		for _, ast := range res.AST {
 			if ast == nil {
 				t.Error("AST is nil")
 			} else {

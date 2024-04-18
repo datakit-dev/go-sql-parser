@@ -11,11 +11,9 @@ var (
 	ErrParserNotInitialized = fmt.Errorf("parser not initialized")
 )
 
-type TableColumnList *internal.TableColumnList
-type ParseResult *internal.ParseResult
-type AST *internal.AST
-type ASTs *internal.ASTs
-type ASTResult *internal.ASTResult
+// type TableColumnList *internal.TableColumnList
+
+// type ParseResult *internal.ParseResult
 
 type Parser struct {
 	p *internal.Parser
@@ -36,7 +34,7 @@ func (p *Parser) preCheck() error {
 	return nil
 }
 
-func (p *Parser) Parse(sql string, opts ...Option) (ParseResult, error) {
+func (p *Parser) Parse(sql string, opts ...Option) (*ParseResult, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
@@ -44,10 +42,14 @@ func (p *Parser) Parse(sql string, opts ...Option) (ParseResult, error) {
 	for _, o := range opts {
 		o.Opt(opt)
 	}
-	return p.p.Parse(sql, opt)
+	res, err := p.p.Parse(sql, opt)
+	if err != nil {
+		return nil, err
+	}
+	return NewParseResult(res), nil
 }
 
-func (p *Parser) Astify(sql string, opts ...Option) (ASTResult, error) {
+func (p *Parser) Astify(sql string, opts ...Option) (*ASTResult, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
@@ -55,10 +57,14 @@ func (p *Parser) Astify(sql string, opts ...Option) (ASTResult, error) {
 	for _, o := range opts {
 		o.Opt(opt)
 	}
-	return p.p.Astify(sql, opt)
+	ast, err := p.p.Astify(sql, opt)
+	if err != nil {
+		return nil, err
+	}
+	return NewASTResult(ast), nil
 }
 
-func (p *Parser) Sqlify(ast ASTResult, opts ...Option) (string, error) {
+func (p *Parser) Sqlify(ast *ASTResult, opts ...Option) (string, error) {
 	if err := p.preCheck(); err != nil {
 		return "", err
 	}
@@ -66,7 +72,7 @@ func (p *Parser) Sqlify(ast ASTResult, opts ...Option) (string, error) {
 	for _, o := range opts {
 		o.Opt(opt)
 	}
-	return p.p.Sqlify(ast, opt)
+	return p.p.Sqlify(ast.ASTResult, opt)
 }
 
 func (p *Parser) TableList(sql string, opts ...Option) ([]string, error) {
