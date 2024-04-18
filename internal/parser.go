@@ -46,7 +46,7 @@ func NewParser() (*Parser, error) {
 }
 
 // parse(sql: string, opt?: Option): TableColumnAst;
-func (p *Parser) Parse(sql string, opt types.Option) (*ParseResult, error) {
+func (p *Parser) Parse(sql string, opt *types.Option) (*ParseResult, error) {
 	if p.vm == nil {
 		return nil, fmt.Errorf("vm not initialized")
 	}
@@ -74,7 +74,7 @@ func (p *Parser) Parse(sql string, opt types.Option) (*ParseResult, error) {
 }
 
 // astify(sql: string, opt?: Option): AST[] | AST;
-func (p *Parser) Astify(sql string, opt types.Option) (*ASTResult, error) {
+func (p *Parser) Astify(sql string, opt *types.Option) (*ASTResult, error) {
 	if p.vm == nil {
 		return nil, fmt.Errorf("vm not initialized")
 	}
@@ -102,7 +102,7 @@ func (p *Parser) Astify(sql string, opt types.Option) (*ASTResult, error) {
 }
 
 // sqlify(ast: AST[] | AST, opt?: Option): string;
-func (p *Parser) Sqlify(ast *ASTResult, opt types.Option) (string, error) {
+func (p *Parser) Sqlify(ast *ASTResult, opt *types.Option) (string, error) {
 	if p.vm == nil {
 		return "", fmt.Errorf("vm not initialized")
 	}
@@ -130,7 +130,7 @@ func (p *Parser) Sqlify(ast *ASTResult, opt types.Option) (string, error) {
 }
 
 // tableList(sql: string, opt?: Option): string[];
-func (p *Parser) TableList(sql string, opt types.Option) ([]string, error) {
+func (p *Parser) TableList(sql string, opt *types.Option) ([]string, error) {
 	if p.vm == nil {
 		return nil, fmt.Errorf("vm not initialized")
 	}
@@ -158,7 +158,7 @@ func (p *Parser) TableList(sql string, opt types.Option) ([]string, error) {
 }
 
 // columnList(sql: string, opt?: Option): string[];
-func (p *Parser) ColumnList(sql string, opt types.Option) ([]string, error) {
+func (p *Parser) ColumnList(sql string, opt *types.Option) ([]string, error) {
 	if p.vm == nil {
 		return nil, fmt.Errorf("vm not initialized")
 	}
@@ -186,7 +186,7 @@ func (p *Parser) ColumnList(sql string, opt types.Option) ([]string, error) {
 }
 
 // whiteListCheck(sql: string, whiteList: string[], opt?: Option): Error | undefined;
-func (p *Parser) WhiteListCheck(sql string, whiteList []string, opt types.Option) error {
+func (p *Parser) WhiteListCheck(sql string, whiteList []string, opt *types.Option) error {
 	if p.vm == nil {
 		return fmt.Errorf("vm not initialized")
 	}

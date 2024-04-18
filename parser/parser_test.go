@@ -121,22 +121,22 @@ func TestAllDatabases_Select(t *testing.T) {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
 		if res != nil && res.AST.Len() > 1 {
-			t.Error("AST length is greater than 1")
+			t.Error(fmt.Sprintf("%s failed", db), "AST length is greater than 1")
 		}
 
 		for _, ast := range res.AST {
 			if ast == nil {
-				t.Error("AST is nil")
+				t.Error(fmt.Sprintf("%s failed", db), "AST is nil")
 			} else {
 				if !ast.Is(types.SelectStatement) {
-					t.Error("AST type is not selete")
+					t.Error(fmt.Sprintf("%s failed", db), "AST type is not select")
 				} else {
 					selectStmt, err := ast.Select()
 					if err != nil {
-						t.Error("Error decoding select statement:", err)
+						t.Error(fmt.Sprintf("%s failed", db), "Error decoding select statement:", err)
 					}
 					if selectStmt == nil {
-						t.Error("Select statement is nil")
+						t.Error(fmt.Sprintf("%s failed", db), "Select statement is nil")
 					}
 				}
 			}
@@ -157,22 +157,22 @@ func TestAllDatabases_Insert(t *testing.T) {
 			t.Error(fmt.Sprintf("%s failed", db), err)
 		}
 		if res != nil && res.AST.Len() > 1 {
-			t.Error("AST length is greater than 1")
+			t.Error(fmt.Sprintf("%s failed", db), "AST length is greater than 1")
 		}
 
 		for _, ast := range res.AST {
 			if ast == nil {
-				t.Error("AST is nil")
+				t.Error(fmt.Sprintf("%s failed", db), "AST is nil")
 			} else {
 				if !ast.Is(types.InsertStatement) {
-					t.Error("AST type is not insert")
+					t.Error(fmt.Sprintf("%s failed", db), "AST type is not insert")
 				} else {
 					insertStmt, err := ast.Insert()
 					if err != nil {
-						t.Error("Error decoding insert statement:", err)
+						t.Error(fmt.Sprintf("%s failed", db), "Error decoding insert statement:", err)
 					}
 					if insertStmt == nil {
-						t.Error("Insert statement is nil")
+						t.Error(fmt.Sprintf("%s failed", db), "Insert statement is nil")
 					}
 				}
 			}
@@ -310,7 +310,7 @@ func TestAllDatabases_Create(t *testing.T) {
 			query = `
 				CREATE TABLE employees (
 					id INT64,
-					name TEXT,
+					name STRING,
 					age INT64
 				)
 			`

@@ -38,7 +38,7 @@ func (p *Parser) Parse(sql string, opts ...Option) (*ParseResult, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}
@@ -53,7 +53,7 @@ func (p *Parser) Astify(sql string, opts ...Option) (*ASTResult, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}
@@ -68,7 +68,7 @@ func (p *Parser) Sqlify(ast *ASTResult, opts ...Option) (string, error) {
 	if err := p.preCheck(); err != nil {
 		return "", err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}
@@ -79,7 +79,7 @@ func (p *Parser) TableList(sql string, opts ...Option) ([]string, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}
@@ -90,7 +90,7 @@ func (p *Parser) ColumnList(sql string, opts ...Option) ([]string, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}
@@ -101,7 +101,7 @@ func (p *Parser) WhiteListCheck(sql string, whiteList []string, opts ...Option) 
 	if err := p.preCheck(); err != nil {
 		return err
 	}
-	opt := types.Option{}
+	opt := &types.Option{}
 	for _, o := range opts {
 		o.Opt(opt)
 	}

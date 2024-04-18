@@ -20,11 +20,11 @@ package types
 //   }
 
 type Select struct {
-	Type     Statement `json:"type"`
-	With     []With    `json:"with"`
-	Options  []any     `json:"options"`
-	Distinct string    `json:"distinct"`
-	Columns  []any     `json:"columns"`
+	Type    Statement `json:"type"`
+	With    []With    `json:"with"`
+	Options []any     `json:"options"`
+	// Distinct string    `json:"distinct"`
+	Columns []any `json:"columns"`
 	// From               []From     `json:"from"`
 	Where any `json:"where"`
 	// Groupby            []ColumnRef `json:"groupby"`

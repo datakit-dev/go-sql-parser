@@ -25,7 +25,7 @@ type Insert struct {
 	Type    Statement     `json:"type"`
 	DB      string        `json:"db"`
 	Table   any           `json:"table"`
-	Columns []string      `json:"columns"`
+	Columns []any         `json:"columns,omitempty"`
 	Values  []InsertValue `json:"values"`
 	// Loc     LocationRange `json:"loc"`
 }

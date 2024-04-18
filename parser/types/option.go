@@ -1,6 +1,8 @@
 package types
 
-import "github.com/mitchellh/mapstructure"
+import (
+	"encoding/json"
+)
 
 // export interface ParseOptions {
 // 	includeLocations?: boolean;
@@ -21,13 +23,16 @@ type Option struct {
 }
 
 type ParseOptions struct {
-	IncludeLocations bool
+	IncludeLocations bool `json:"includeLocations,omitempty"`
 }
 
 func (o *Option) ToMap() (map[string]any, error) {
-	m := make(map[string]any)
-	err := mapstructure.Decode(o, &m)
+	b, err := json.Marshal(o)
 	if err != nil {
+		return nil, err
+	}
+	m := make(map[string]any)
+	if err := json.Unmarshal(b, &m); err != nil {
 		return nil, err
 	}
 	return m, nil
@@ -45,6 +50,6 @@ func (o *Option) SetTrimQuery(b bool) {
 	o.TrimQuery = &b
 }
 
-func (o *Option) SetParseOptions(po ParseOptions) {
-	o.ParseOptions = &po
+func (o *Option) SetParseOptions(po *ParseOptions) {
+	o.ParseOptions = po
 }
