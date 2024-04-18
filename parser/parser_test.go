@@ -47,6 +47,8 @@ func TestParse_Select(t *testing.T) {
 		t.Error("Columns is nil")
 	} else if len(sel.Columns) == 0 {
 		t.Error("Columns is empty")
+	} else if sel.From == nil {
+		t.Error("From is nil")
 	}
 }
 
@@ -62,7 +64,7 @@ func TestSqlify_Select(t *testing.T) {
 		t.Error("Failed to parse SQL", err)
 	}
 
-	sql2, err := p.Sqlify(res.ASTResult)
+	sql2, err := p.Sqlify(res.AST[0])
 	if err != nil {
 		t.Error("Failed to astify SQL", err)
 	}
@@ -400,16 +402,13 @@ func TestBigQuery_With_Select(t *testing.T) {
 	}
 
 	db := parser.BigQuery
-	sql := `
+	sql := fmt.Sprintf(`
 		WITH t1 AS (
-			SELECT a, b FROM schema1.table1
-		), t2 AS (
-			SELECT c, d FROM schema2.table2
+			SELECT %s AS col1 FROM %s.%s
 		)
-		SELECT a, b FROM t1
-		UNION ALL
-		SELECT c, d FROM t2
-	`
+
+		SELECT * FROM t1
+	`, "test_column", "cool_schema", "test_table")
 	res, err := p.Parse(sql, parser.WithDatabase(db))
 	if err != nil {
 		t.Error(fmt.Sprintf("%s failed", db), err)
@@ -430,7 +429,7 @@ func TestBigQuery_With_Select(t *testing.T) {
 	if res != nil && res.TableList != nil && len(res.TableList) == 0 {
 		t.Error("TableList is empty")
 	}
-	if res != nil && res.ASTResult == nil {
+	if res != nil && res.AST == nil {
 		t.Error("AST is nil")
 	} else if res.AST.Len() == 0 {
 		t.Error("AST is empty")

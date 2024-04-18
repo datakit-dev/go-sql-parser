@@ -3,20 +3,25 @@ package parser
 import (
 	"testing"
 
+	"github.com/datakit-dev/go-sql-parser/internal"
 	"github.com/datakit-dev/go-sql-parser/parser/types"
 )
 
+func newAST(m map[string]any) *AST {
+	return &AST{internal.AST{M: m}}
+}
+
 func TestAST_Type(t *testing.T) {
 	tests := []struct {
-		ast      AST
+		ast      *AST
 		expected types.Statement
 	}{
 		{
-			ast:      AST{"type": "select"},
+			ast:      newAST(map[string]any{"type": "select"}),
 			expected: types.SelectStatement,
 		},
 		{
-			ast:      AST{"type": "insert"},
+			ast:      newAST(map[string]any{"type": "insert"}),
 			expected: types.InsertStatement,
 		},
 	}
@@ -31,22 +36,22 @@ func TestAST_Type(t *testing.T) {
 
 func TestAST_Is(t *testing.T) {
 	tests := []struct {
-		ast      AST
+		ast      *AST
 		stmt     types.Statement
 		expected bool
 	}{
 		{
-			ast:      AST{"type": "select"},
+			ast:      newAST(map[string]any{"type": "select"}),
 			stmt:     types.SelectStatement,
 			expected: true,
 		},
 		{
-			ast:      AST{"type": "insert"},
+			ast:      newAST(map[string]any{"type": "insert"}),
 			stmt:     types.SelectStatement,
 			expected: false,
 		},
 		{
-			ast:      AST{"type": "foobar"},
+			ast:      newAST(map[string]any{"type": "foobar"}),
 			stmt:     types.SelectStatement,
 			expected: false,
 		},
@@ -67,18 +72,21 @@ func TestASTSlice_FindAll(t *testing.T) {
 	}{
 		{
 			ast: ASTs{
-				{"type": "select"},
-				{"type": "insert"},
-				{"type": "update"},
-				{"type": "delete"},
-				{"type": "create"},
-				{"type": "drop"},
-				{"type": "alter"},
-				{"type": "select"},
-				{"type": "foobar"},
-				{"type": ""},
+				newAST(map[string]any{"type": "select"}),
+				newAST(map[string]any{"type": "insert"}),
+				newAST(map[string]any{"type": "update"}),
+				newAST(map[string]any{"type": "delete"}),
+				newAST(map[string]any{"type": "create"}),
+				newAST(map[string]any{"type": "drop"}),
+				newAST(map[string]any{"type": "alter"}),
+				newAST(map[string]any{"type": "select"}),
+				newAST(map[string]any{"type": "foobar"}),
+				newAST(map[string]any{"type": ""}),
 			},
-			expected: ASTs([]AST{{"type": "select"}, {"type": "select"}}),
+			expected: ASTs{
+				newAST(map[string]any{"type": "select"}),
+				newAST(map[string]any{"type": "select"}),
+			},
 		},
 	}
 
@@ -93,21 +101,21 @@ func TestASTSlice_FindAll(t *testing.T) {
 func TestASTSlice_FindFirst(t *testing.T) {
 	tests := []struct {
 		ast      ASTs
-		expected AST
+		expected *AST
 	}{
 		{
 			ast: ASTs{
-				{"type": "select"},
-				{"type": "insert"},
-				{"type": "update"},
-				{"type": "delete"},
-				{"type": "create"},
-				{"type": "drop"},
-				{"type": "alter"},
-				{"type": "foobar"},
-				{"type": ""},
+				newAST(map[string]any{"type": "select"}),
+				newAST(map[string]any{"type": "insert"}),
+				newAST(map[string]any{"type": "update"}),
+				newAST(map[string]any{"type": "delete"}),
+				newAST(map[string]any{"type": "create"}),
+				newAST(map[string]any{"type": "drop"}),
+				newAST(map[string]any{"type": "alter"}),
+				newAST(map[string]any{"type": "foobar"}),
+				newAST(map[string]any{"type": ""}),
 			},
-			expected: AST{"type": "select"},
+			expected: newAST(map[string]any{"type": "select"}),
 		},
 	}
 
@@ -121,11 +129,11 @@ func TestASTSlice_FindFirst(t *testing.T) {
 
 func TestAST_Select(t *testing.T) {
 	tests := []struct {
-		ast      AST
+		ast      *AST
 		expected *types.Select
 	}{
 		{
-			ast: AST{"type": "select"},
+			ast: newAST(map[string]any{"type": "select"}),
 			expected: &types.Select{
 				Type: types.SelectStatement,
 			},

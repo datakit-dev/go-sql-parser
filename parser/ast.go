@@ -8,23 +8,18 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-type AST map[string]any
-type ASTs []AST
+type AST struct{ internal.AST }
+type ASTs []*AST
 
-type ASTResult struct {
-	*internal.ASTResult
-	AST ASTs
-}
-
-func NewASTResult(val *internal.ASTResult) *ASTResult {
+func NewAST(val *internal.ASTResult) ASTs {
 	ast := ASTs{}
 	for _, a := range val.AST {
-		ast = append(ast, a)
+		ast = append(ast, &AST{a})
 	}
-	return &ASTResult{val, ast}
+	return ast
 }
 
-func (s ASTs) First() AST {
+func (s ASTs) First() *AST {
 	return s[0]
 }
 
@@ -42,7 +37,7 @@ func (s ASTs) FindAll(t types.Statement) ASTs {
 	return result
 }
 
-func (s ASTs) FindFirst(t types.Statement) AST {
+func (s ASTs) FindFirst(t types.Statement) *AST {
 	for _, ast := range s {
 		if ast.Type() == t {
 			return ast
@@ -52,7 +47,7 @@ func (s ASTs) FindFirst(t types.Statement) AST {
 }
 
 func (a AST) Type() types.Statement {
-	return types.StatementFrom(a["type"].(string))
+	return types.StatementFrom(a.M["type"].(string))
 }
 
 func (a AST) Is(s types.Statement) bool {
@@ -64,7 +59,7 @@ func (a AST) Use() (*types.Use, error) {
 		return nil, fmt.Errorf("not a %s statement", types.UseStatement)
 	}
 	u := types.Use{}
-	err := mapstructure.Decode(a, &u)
+	err := mapstructure.Decode(a.M, &u)
 	return &u, err
 }
 
@@ -73,7 +68,7 @@ func (a AST) Select() (*types.Select, error) {
 		return nil, fmt.Errorf("not a %s statement", types.SelectStatement)
 	}
 	s := types.Select{}
-	err := mapstructure.Decode(a, &s)
+	err := mapstructure.Decode(a.M, &s)
 	return &s, err
 }
 
@@ -82,7 +77,7 @@ func (a AST) Insert() (*types.Insert, error) {
 		return nil, fmt.Errorf("not a %s statement", types.InsertStatement)
 	}
 	i := types.Insert{}
-	err := mapstructure.Decode(a, &i)
+	err := mapstructure.Decode(a.M, &i)
 	return &i, err
 }
 
@@ -91,7 +86,7 @@ func (a AST) Update() (*types.Update, error) {
 		return nil, fmt.Errorf("not a %s statement", types.UpdateStatement)
 	}
 	u := types.Update{}
-	err := mapstructure.Decode(a, &u)
+	err := mapstructure.Decode(a.M, &u)
 	return &u, err
 }
 
@@ -100,7 +95,7 @@ func (a AST) Delete() (*types.Delete, error) {
 		return nil, fmt.Errorf("not a %s statement", types.DeleteStatement)
 	}
 	d := types.Delete{}
-	err := mapstructure.Decode(a, &d)
+	err := mapstructure.Decode(a.M, &d)
 	return &d, err
 }
 
@@ -109,7 +104,7 @@ func (a AST) Alter() (*types.Alter, error) {
 		return nil, fmt.Errorf("not a %s statement", types.AlterStatement)
 	}
 	al := types.Alter{}
-	err := mapstructure.Decode(a, &al)
+	err := mapstructure.Decode(a.M, &al)
 	return &al, err
 }
 
@@ -118,7 +113,7 @@ func (a AST) Create() (*types.Create, error) {
 		return nil, fmt.Errorf("not a %s statement", types.CreateStatement)
 	}
 	c := types.Create{}
-	err := mapstructure.Decode(a, &c)
+	err := mapstructure.Decode(a.M, &c)
 	return &c, err
 }
 
@@ -127,6 +122,6 @@ func (a AST) Drop() (*types.Drop, error) {
 		return nil, fmt.Errorf("not a %s statement", types.DropStatement)
 	}
 	d := types.Drop{}
-	err := mapstructure.Decode(a, &d)
+	err := mapstructure.Decode(a.M, &d)
 	return &d, err
 }

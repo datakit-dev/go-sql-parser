@@ -19,14 +19,16 @@ package types
 // 	loc?: LocationRange;
 //   }
 
+type SelectFrom []From
+
 type Select struct {
-	Type    Statement `json:"type"`
-	With    []With    `json:"with"`
-	Options []any     `json:"options"`
-	// Distinct string    `json:"distinct"`
-	Columns []any `json:"columns"`
-	// From               []From     `json:"from"`
-	Where any `json:"where"`
+	Type     Statement   `json:"type"`
+	With     []With      `json:"with"`
+	Options  []any       `json:"options"`
+	Distinct any         `json:"distinct"`
+	Columns  []any       `json:"columns"`
+	From     *SelectFrom `json:"from"`
+	Where    any         `json:"where"`
 	// Groupby            []ColumnRef `json:"groupby"`
 	Having []any `json:"having"`
 	// Orderby            []OrderBy  `json:"orderby"`

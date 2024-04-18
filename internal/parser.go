@@ -102,7 +102,7 @@ func (p *Parser) Astify(sql string, opt *types.Option) (*ASTResult, error) {
 }
 
 // sqlify(ast: AST[] | AST, opt?: Option): string;
-func (p *Parser) Sqlify(ast *ASTResult, opt *types.Option) (string, error) {
+func (p *Parser) Sqlify(ast AST, opt *types.Option) (string, error) {
 	if p.vm == nil {
 		return "", fmt.Errorf("vm not initialized")
 	}

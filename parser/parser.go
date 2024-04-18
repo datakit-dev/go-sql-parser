@@ -49,7 +49,7 @@ func (p *Parser) Parse(sql string, opts ...Option) (*ParseResult, error) {
 	return NewParseResult(res), nil
 }
 
-func (p *Parser) Astify(sql string, opts ...Option) (*ASTResult, error) {
+func (p *Parser) Astify(sql string, opts ...Option) (ASTs, error) {
 	if err := p.preCheck(); err != nil {
 		return nil, err
 	}
@@ -61,10 +61,10 @@ func (p *Parser) Astify(sql string, opts ...Option) (*ASTResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	return NewASTResult(ast), nil
+	return NewAST(ast), nil
 }
 
-func (p *Parser) Sqlify(ast *ASTResult, opts ...Option) (string, error) {
+func (p *Parser) Sqlify(ast *AST, opts ...Option) (string, error) {
 	if err := p.preCheck(); err != nil {
 		return "", err
 	}
@@ -72,7 +72,7 @@ func (p *Parser) Sqlify(ast *ASTResult, opts ...Option) (string, error) {
 	for _, o := range opts {
 		o.Opt(opt)
 	}
-	return p.p.Sqlify(ast.ASTResult, opt)
+	return p.p.Sqlify(ast.AST, opt)
 }
 
 func (p *Parser) TableList(sql string, opts ...Option) ([]string, error) {
