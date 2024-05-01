@@ -19,11 +19,12 @@ package types
 // 	loc?: LocationRange;
 //   }
 
+type SelectWith []With
 type SelectFrom []From
 
 type Select struct {
 	Type     Statement   `json:"type"`
-	With     []With      `json:"with"`
+	With     *SelectWith `json:"with"`
 	Options  []any       `json:"options"`
 	Distinct any         `json:"distinct"`
 	Columns  []any       `json:"columns"`

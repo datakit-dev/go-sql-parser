@@ -441,12 +441,24 @@ func TestBigQuery_With_Select(t *testing.T) {
 				if !ast.Is(types.SelectStatement) {
 					t.Error("AST type is not select:", ast.Type())
 				} else {
-					selectStmt, err := ast.Select()
+					sel, err := ast.Select()
 					if err != nil {
 						t.Error("Error decoding select statement:", err)
 					}
-					if selectStmt == nil {
+					if sel == nil {
 						t.Error("Select statement is nil")
+					} else if sel.With != nil {
+						for idx := range *sel.With {
+							sql, err := p.Sqlify(ast, parser.WithStatementPath("with", idx, "stmt", "ast"))
+							if err != nil {
+								t.Error("Failed to sqlify AST:", err)
+							}
+							if sql == "" {
+								t.Error("SQL is empty")
+							} else {
+								t.Log(sql)
+							}
+						}
 					}
 				}
 			}

@@ -17,3 +17,15 @@ func (opt dbOpt) Opt(o *types.Option) {
 func WithDatabase(db Database) Option {
 	return dbOpt{db}
 }
+
+type stmtPathOpt struct {
+	StmtPath []any
+}
+
+func (opt stmtPathOpt) Opt(o *types.Option) {
+	o.SetStatementPath(opt.StmtPath)
+}
+
+func WithStatementPath(stmtPath ...any) Option {
+	return stmtPathOpt{stmtPath}
+}

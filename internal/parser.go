@@ -101,6 +101,35 @@ func (p *Parser) Astify(sql string, opt *types.Option) (*ASTResult, error) {
 	return NewASTResult(p.vm, val)
 }
 
+func (p *Parser) getValue(v goja.Value, key any) (goja.Value, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered in getValue", r)
+		}
+	}()
+
+	obj := v.ToObject(p.vm)
+	if obj == nil {
+		return nil, fmt.Errorf("ast not an object")
+	}
+
+	var nv goja.Value
+	switch key.(type) {
+	case int:
+		if a, ok := v.Export().([]any); ok {
+			nv = p.vm.ToValue(a[key.(int)])
+		}
+	case string:
+		nv = obj.Get(key.(string))
+	}
+
+	if nv == nil {
+		return nil, fmt.Errorf("failed to get key %v", key)
+	}
+
+	return nv, nil
+}
+
 // sqlify(ast: AST[] | AST, opt?: Option): string;
 func (p *Parser) Sqlify(ast AST, opt *types.Option) (string, error) {
 	if p.vm == nil {
@@ -117,11 +146,22 @@ func (p *Parser) Sqlify(ast AST, opt *types.Option) (string, error) {
 		return "", fmt.Errorf("unknown sqlify failure")
 	}
 
+	sv := ast.v
+	if opt.StatementPath != nil && len(opt.StatementPath) > 0 {
+		for _, sp := range opt.StatementPath {
+			var err error
+			sv, err = p.getValue(sv, sp)
+			if err != nil {
+				return "", err
+			}
+		}
+	}
+
 	optMap, err := opt.ToMap()
 	if err != nil {
 		return "", err
 	}
-	val, err := sqlify(p.p, ast.v, p.vm.ToValue(optMap))
+	val, err := sqlify(p.p, sv, p.vm.ToValue(optMap))
 	if err != nil {
 		return "", err
 	}

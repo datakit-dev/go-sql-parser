@@ -16,10 +16,11 @@ import (
 //   }
 
 type Option struct {
-	Database     *string       `json:"database,omitempty"`
-	Type         *string       `json:"type,omitempty"`
-	TrimQuery    *bool         `json:"trimQuery,omitempty"`
-	ParseOptions *ParseOptions `json:"parseOptions,omitempty"`
+	StatementPath []any
+	Database      *string       `json:"database,omitempty"`
+	Type          *string       `json:"type,omitempty"`
+	TrimQuery     *bool         `json:"trimQuery,omitempty"`
+	ParseOptions  *ParseOptions `json:"parseOptions,omitempty"`
 }
 
 type ParseOptions struct {
@@ -36,6 +37,10 @@ func (o *Option) ToMap() (map[string]any, error) {
 		return nil, err
 	}
 	return m, nil
+}
+
+func (o *Option) SetStatementPath(sp []any) {
+	o.StatementPath = sp
 }
 
 func (o *Option) SetDatabase(db string) {
